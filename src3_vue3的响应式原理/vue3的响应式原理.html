@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    let person = {
+      name: '张三',
+      age: '18'
+    };
+    // 模拟vue2实现响应式
+    // #region
+    // let p = {};
+    // Object.defineProperty(p, 'name', {
+    //   get() {
+    //     return person.name;
+    //   },
+    //   set(value) {
+    //     console.log('有人修改了person中的属性')
+    //     person.name = value;
+    //   }
+    // })
+    // #endregion
+    
+    // vue3的响应式 -> proxy
+  
+    const p = new Proxy(person, {
+      // 读取p的某个属性时调用
+      get(target, propKey) {
+        // return target[propKey]; // object
+        return Reflect.get(target, propKey)
+      },
+      // 修改或增加某个属性时调用
+      set(target, propKey, value) {
+        // target[propKey] = value; // object
+        Reflect.set(target, propKey, value)
+      },
+      // 删除某个属性时调用
+      deleteProperty(target, propKey) {
+        // 不写return时返回一个false，实际上已经删除了
+        // return delete target[propKey]
+        return Reflect.deleteProperty(target, propKey)
+      }
+    });
+    
+
+
+  </script>
+</body>
+</html>
